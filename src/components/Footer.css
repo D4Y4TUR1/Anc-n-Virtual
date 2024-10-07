@@ -1,0 +1,83 @@
+/* src/components/Footer.css */
+.footer {
+    background-color: #f2c23e; /* Fondo amarillo */
+    padding: 40px 20px;
+    color: #333;
+    }
+    
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    
+    .footer-logo {
+        max-width: 300px;
+    }
+    
+    .footer-logo h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    
+    .footer-subscribe {
+        display: flex;
+        margin-top: 10px;
+    }
+    
+    .footer-subscribe input {
+        padding: 10px;
+        border: none;
+        border-radius: 5px 0 0 5px;
+        outline: none;
+    }
+    
+    .footer-subscribe button {
+        padding: 10px;
+        background-color: #333;
+        color: white;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+    }
+    
+    .footer-links {
+        display: flex;
+        gap: 20px;
+    }
+    
+    .footer-column {
+        max-width: 200px;
+    }
+    
+    .footer-column h3 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    
+    .footer-column a {
+        display: block;
+        text-decoration: none;
+        color: #333;
+        margin: 5px 0;
+    }
+    
+    .footer-column a:hover {
+        color: #555;
+    }
+    
+    .footer-bottom {
+        margin-top: 20px;
+        text-align: center;
+    }
+    
+    .footer-policy-links a {
+        margin: 0 10px;
+        text-decoration: none;
+        color: #333;
+    }
+    
+    .footer-policy-links a:hover {
+        color: #555;
+    }
+    
