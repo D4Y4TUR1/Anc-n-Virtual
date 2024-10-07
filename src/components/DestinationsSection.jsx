@@ -62,6 +62,7 @@ export default DestinationsSection;
 import React, { useEffect, useState } from 'react';
 import { getTouristSites } from '../services/firestoreService'; // Importa la función para obtener los datos
 import DestinationCard from './DestinationCard'; // Asegúrate de tener el componente para mostrar los datos
+import './DestinationsSection.css';
 
 const DestinationsSection = () => {
     const [sites, setSites] = useState([]);

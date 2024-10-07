@@ -25,12 +25,13 @@ import './DestinationCard.css';
 
 const DestinationCard = ({ name, description, category, function: siteFunction, img }) => {
     return (
+        
         <div className="destination-card">
-        <img src={img} alt={name} className="destination-image" />
-        <h3 className="destination-title">{name}</h3>
-        <p className="destination-description">{description}</p>
-        <p className="destination-category"><strong>Category:</strong> {category}</p>
-        <p className="destination-function"><strong>Function:</strong> {siteFunction}</p>
+            <img src={img} alt={name} className="destination-image" />
+            <h3 className="destination-title">{name}</h3>
+            <p className="destination-function">{siteFunction}</p>
+            <p className="destination-description">{description}</p>
+
         </div>
     );
 };

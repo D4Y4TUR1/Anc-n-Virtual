@@ -1,12 +1,14 @@
 /* src/components/DestinationCard.css */
 .destination-card {
-    width: 300px;
+    width: 100%; /* Ajusta el tamaño al del contenedor */
+    max-width: 300px; /* Fija un tamaño máximo para evitar que crezcan demasiado */
     border: 1px solid #ccc;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    margin: 20px;
+    margin: 10px 0; /* Espacio entre tarjetas en filas diferentes */
+    
 }
 
 .destination-image {

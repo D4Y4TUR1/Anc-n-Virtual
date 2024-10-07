@@ -18,9 +18,22 @@
     }
     
     .destinations-grid {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 20px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Tres columnas de igual tamaño */
+        gap: 20px; /* Espacio entre las tarjetas */
+        justify-items: center; /* Centra las tarjetas dentro de cada columna */
+        padding: 20px; /* Añade un poco de espacio alrededor de la cuadrícula */
+    }
+    
+    @media (max-width: 768px) {
+        .destinations-grid {
+            grid-template-columns: repeat(2, 1fr); /* Dos columnas en pantallas medianas */
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .destinations-grid {
+            grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
+        }
     }
     
