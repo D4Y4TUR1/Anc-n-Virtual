@@ -1,17 +1,19 @@
 // src/App.jsx
 import React from 'react';
 import Navbar from './components/Navbar';
+import Hero from './components/Hero';
 
 function App() {
   return (
     <div className="App">
       <Navbar />
-      {/* Aquí agregaremos otros componentes más adelante */}
+      <Hero />
     </div>
   );
 }
 
 export default App;
+
 
 
 
