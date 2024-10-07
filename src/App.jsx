@@ -2,6 +2,7 @@
 import React from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import DestinationsSection from './components/DestinationsSection';
 import Footer from './components/Footer'; // Importar el Footer
 
 function App() {
@@ -9,7 +10,8 @@ function App() {
     <div className="App">
       <Navbar />
       <Hero />
-      <Footer /> 
+      <DestinationsSection />
+      <Footer />
     </div>
   );
 }
