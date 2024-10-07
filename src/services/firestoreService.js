@@ -1,6 +1,6 @@
 // src/services/firestoreService.js
 import { db } from './firebaseConfig';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs } from 'firebase/firestore'; // Añadir getDocs aquí
 
 const addSite = async (site) => {
     try {
@@ -20,6 +20,9 @@ export { getSites };
 
 const getTouristSites = async () => {
     const querySnapshot = await getDocs(collection(db, 'destinoTuristico'));
-    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-};
+    const sites = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    console.log(sites); // Verificar los datos obtenidos
+    return sites;
+};  
 export { getTouristSites };
+
