@@ -12,3 +12,10 @@ const addSite = async (site) => {
 };
 
 export { addSite };
+
+const getSites = async () => {
+    const querySnapshot = await getDocs(collection(db, 'sites'));
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+};
+
+export { getSites };
