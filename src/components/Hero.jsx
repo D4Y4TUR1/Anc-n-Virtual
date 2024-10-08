@@ -18,7 +18,7 @@ function Hero() {
         </div>
         <div className="hero-image">
             {/* Aquí se puede agregar una imagen como fondo */}
-            <img src="https://via.placeholder.com/600x400" alt="Ancón" />
+            <img src="Portada-Principal.png" alt="Ancón" />
         </div>
         </section>
     );
