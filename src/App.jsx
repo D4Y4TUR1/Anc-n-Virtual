@@ -1,5 +1,6 @@
 // src/App.jsx
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import DestinationsSection from './components/DestinationsSection';
@@ -7,12 +8,13 @@ import Footer from './components/Footer'; // Importar el Footer
 
 function App() {
   return (
-    <div className="App">
+    <Router>
       <Navbar />
-      <Hero />
-      <DestinationsSection />
+      <Routes>
+        <Route path="/" element={<><Hero /><DestinationsSection /> </>  } />
+      </Routes>
       <Footer />
-    </div>
+    </Router>
   );
 }
 
