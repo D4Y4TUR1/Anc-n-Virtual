@@ -1,37 +1,17 @@
-// src/components/DestinationCard.jsx
-/*
 import React from 'react';
-import './DestinationCard.css'; // Importar archivo CSS para los estilos
+import { Link } from 'react-router-dom';
+import './DestinationCard.css'; 
 
-function DestinationCard({ image, title, description }) {
+const DestinationCard = ({ sitio }) => {
     return (
         <div className="destination-card">
-        <img src={image} alt={title} className="destination-image" />
-        <h3 className="destination-title">{title}</h3>
-        <p className="destination-description">{description}</p>
-        <div className="destination-icons">
-            {}           
-            <button className="destination-btn">Ver Más</button>
-        </div>
-        </div>
-    );
-}
-
-export default DestinationCard;
-*/
-// src/components/DestinationCard.jsx
-import React from 'react';
-import './DestinationCard.css';
-
-const DestinationCard = ({ name, description, category, function: siteFunction, img }) => {
-    return (
-        
-        <div className="destination-card">
-            <img src={img} alt={name} className="destination-image" />
-            <h3 className="destination-title">{name}</h3>
-            <p className="destination-function">{siteFunction}</p>
-            <p className="destination-description">{description}</p>
-
+        <img src={sitio.img} alt={sitio.nombre} className='destination-image' />
+        <h3 className="destination-title">{sitio.nombre}</h3>
+        <p className='destination-function'>{sitio.funcion} </p>
+        <p className="destination-description">{sitio.descripcion}</p>
+        <Link to={`/tour-virtual/${sitio.id}`}>
+            <button>Ver Tour Virtual</button>
+        </Link>
         </div>
     );
 };
