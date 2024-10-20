@@ -10,7 +10,7 @@ const firebaseConfig = {
     projectId: "virtual-ancon",
     storageBucket: "virtual-ancon.appspot.com",
     messagingSenderId: "1040672610295",
-    appId: "1:1040672610295:web:60d1a0ed61d09965a940f2"
+    appId: "1:1040672610295:web:60d1a0ed61d09965a940f2",
 };
 
 // Inicializar Firebase
