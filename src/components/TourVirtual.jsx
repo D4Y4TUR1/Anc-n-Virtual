@@ -1,8 +1,9 @@
 // src/components/TourVirtual.jsx
 import React, { useEffect, useState } from 'react';
 import { Pannellum } from 'pannellum-react';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { getTouristSites } from '../services/firestoreService';
+import dataScene from '../helpers/dataScene';
 
 // Importa las imágenes
 import DescriptionIcon from '../assets/icons/informacion.gif';
@@ -12,33 +13,75 @@ import ShowControlsIcon from '../assets/icons/mostrar.gif';
 import ImageIcon from '../assets/icons/mapas.gif';
 
 const TourVirtual = () => {
-    const { id } = useParams();
     const [images, setImages] = useState({});
     const [currentImage, setCurrentImage] = useState('');
     const [showControls, setShowControls] = useState(true);
     const [menuOpen, setMenuOpen] = useState(false);
     const [activeSection, setActiveSection] = useState(null);
     const [siteInfo, setSiteInfo] = useState({ informacion: '', ubicacion: '', iframe: '' });
+    const [scene, setScene] = useState(null);
+    const [sceneData, setSceneData] = useState(null);
+        // Obtiene el ID del destino desde el estado de la navegación
+    const location = useLocation();
+    const { destinationId } = location.state;
+        // Selecciona las escenas correspondientes al ID del destino
+    const scenes = dataScene[destinationId] || dataScene['defaultScene']; // Usa una escena por defecto si no existe el destino
 
     useEffect(() => {
         const fetchTourData = async () => {
             try {
                 const sites = await getTouristSites();
-                const site = sites.find((s) => s.id === id);
+                const site = sites.find((s) => s.id === destinationId);
                 if (site) {
-                    setImages({
+                    const imagesData = {
                         entrada: site.img360_Entrada,
-                        intermedio: site.img360_PuntoIntermedio1,
+                        intermedio1: site.img360_PuntoIntermedio1 ?? site.img360_VistaFinal,
+                        intermedio2: site.img360_PuntoIntermedio2 ?? site.img360_VistaFinal,
+                        intermedio3: site.img360_PuntoIntermedio3 ?? site.img360_VistaFinal,
+                        intermedio4: site.img360_PuntoIntermedio4 ?? site.img360_VistaFinal,
                         final: site.img360_VistaFinal,
                         mapa: site.mapa,
                         img: site.img,
-                    });
+                    };
+                    setImages(imagesData);
+                    
+                    // Crear el objeto de escenas dinámicamente
+                    const dynamicScenes = {
+                    insideMain: {
+                        image: site.img360_Entrada,
+                        hotSpots: dataScene[destinationId].insideMain.hotSpots, // Accede a hotspots específicos del destino
+                    },
+                    insideOne: {
+                        image: site.img360_PuntoIntermedio1 ?? site.img360_VistaFinal,
+                        hotSpots: dataScene[destinationId].insideOne.hotSpots,
+                    },
+                    insideTwo: {
+                        image: site.img360_PuntoIntermedio2 ?? site.img360_VistaFinal,
+                        hotSpots: dataScene[destinationId].insideTwo.hotSpots,
+                    },
+                    insideThree: {
+                        image: site.img360_PuntoIntermedio3 ?? site.img360_VistaFinal,
+                        hotSpots: dataScene[destinationId].insideThree.hotSpots,
+                    },
+                    insideFour: {
+                        image: site.img360_PuntoIntermedio4 ?? site.img360_VistaFinal,
+                        hotSpots: dataScene[destinationId].insideFour.hotSpots,
+                    },
+                        insideFinal: {
+                            image: site.img360_VistaFinal,
+                            hotSpots: dataScene[destinationId].insideFinal.hotSpots,
+                        }
+                    };
+                    
+                    setSceneData(dynamicScenes);
+                    setScene(dynamicScenes.insideMain); // Iniciar con la primera escena
+                    setCurrentImage(site.img360_Entrada);
                     setSiteInfo({
                         informacion: site.informacion,
                         ubicacion: site.ubicacion,
-                        iframe: site.iframe, // Guardamos el iframe del sitio
+                        nombre: site.nombre,
+                        iframe: site.iframe,
                     });
-                    setCurrentImage(site.img360_Entrada);
                 }
             } catch (error) {
                 console.error('Error al cargar los datos del sitio:', error);
@@ -46,12 +89,25 @@ const TourVirtual = () => {
         };
 
         fetchTourData();
-    }, [id]);
+    }, [destinationId]);
+
+    const handleSceneChange = (newScene) => {
+        if (sceneData && sceneData[newScene]) {
+            setScene(sceneData[newScene]);
+            setCurrentImage(sceneData[newScene].image);
+        }
+    };
 
     const handleNextImage = () => {
         if (currentImage === images.entrada) {
-            setCurrentImage(images.intermedio);
-        } else if (currentImage === images.intermedio) {
+            setCurrentImage(images.intermedio1);
+        } else if (currentImage === images.intermedio1) {
+            setCurrentImage(images.intermedio2);
+        } else if (currentImage === images.intermedio2) {
+            setCurrentImage(images.intermedio3);
+        } else if (currentImage === images.intermedio3) {
+            setCurrentImage(images.intermedio4);
+        } else if (currentImage === images.intermedio4) {
             setCurrentImage(images.final);
         } else {
             setCurrentImage(images.entrada);
@@ -71,6 +127,32 @@ const TourVirtual = () => {
 
     if (!currentImage) return <p>Cargando tour virtual...</p>;
 
+    const dynamicScenes = (Element, i) => {
+        if (Element.cssClass === 'hotspotElement') {
+            return (
+                <Pannellum.Hotspot
+                    key={i}
+                    type={Element.type}
+                    pitch={Element.pitch}
+                    yaw={Element.yaw}
+                    cssClass={Element.cssClass}
+                    handleClick={() => alert('Click')}
+                />
+            );
+        } else if (Element.cssClass === 'moveScene') {
+            return (
+                <Pannellum.Hotspot
+                    key={i}
+                    type={Element.type}
+                    pitch={Element.pitch}
+                    yaw={Element.yaw}
+                    cssClass={Element.cssClass}
+                    handleClick={() => handleSceneChange(Element.scene)}
+                />
+            );
+        }
+    };
+    
     return (
         <div style={{ height: '100vh', width: '100vw', position: 'relative' }}>
             <button
@@ -172,21 +254,30 @@ const TourVirtual = () => {
             >
                 Cambiar Vista
             </button>
-
-            <Pannellum
-                width="100%"
-                height="100%"
-                image={currentImage}
-                pitch={10}
-                yaw={180}
-                hfov={110}
-                autoLoad
-                showZoomCtrl={showControls}
-                showFullscreenCtrl={showControls}
-                onLoad={() => {
-                    console.log('Panorama cargado');
-                }}
-            />
+    
+            {scene && (
+                <Pannellum
+                    width="100%"
+                    height="100%"
+                    image={currentImage}
+                    title={siteInfo.nombre}
+                    pitch={23}
+                    yaw={93}
+                    hfov={110}
+                    autoLoad
+                    showZoomCtrl={showControls}
+                    showFullscreenCtrl={showControls}
+                    onLoad={() => {
+                        console.log('Panorama cargado');
+                    }}
+                    hotspotDebug={true}
+                    scene={scenes.insideMain}
+                >
+                {Object.values(scene.hotSpots).map((Element, i) => 
+                        dynamicScenes(Element, i)
+                    )}
+                </Pannellum>
+            )}
         </div>
     );
 };

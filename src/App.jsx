@@ -12,8 +12,8 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<><Hero /><DestinationsSection /> </>  } />
-        <Route path="/tour-virtual/:id" element={ <TourVirtual />  }      />
+        <Route path="/" element={<><Hero /><DestinationsSection /></>} />
+        <Route path="/tour-virtual/:id" element={<TourVirtual />} />
       </Routes>
       <Footer />
     </Router>
