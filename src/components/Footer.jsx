@@ -1,13 +1,19 @@
 // src/components/Footer.jsx
 import React from 'react';
 import './Footer.css'; // Importar archivo CSS para los estilos
+import logo from '../assets/logo.png';
+
 
 function Footer() {
     return (
         <footer className="footer">
         <div className="footer-content">
             <div className="footer-logo">
-            <h2>Virtual Ancón</h2>
+            <div className="navbar-logo">
+                <a href="/">
+                    <img src={logo} alt="Virtual Ancón" className="logo-image" />
+                </a>
+            </div>
             <p>Únete a nuestro boletín para estar al tanto de novedades y lanzamientos.</p>
             <div className="footer-subscribe">
                 <input type="email" placeholder="Ingresa tu correo" />
@@ -17,20 +23,17 @@ function Footer() {
 
             <div className="footer-links">
             <div className="footer-column">
-                <h3>Columna Uno</h3>
-                <a href="#!">Enlace Uno</a>
-                <a href="#!">Enlace Dos</a>
-                <a href="#!">Enlace Tres</a>
-                <a href="#!">Enlace Cuatro</a>
-                <a href="#!">Enlace Cinco</a>
+                <h3>Acerca de</h3>
+                <a href="#!">Equipo</a>
+                <a href="#!">Servicios</a>
+                <a href="#!">Accede a tu cuenta</a>
+                <a href="#!">Autores</a>
             </div>
             <div className="footer-column">
-                <h3>Columna Dos</h3>
-                <a href="#!">Enlace Seis</a>
-                <a href="#!">Enlace Siete</a>
-                <a href="#!">Enlace Ocho</a>
-                <a href="#!">Enlace Nueve</a>
-                <a href="#!">Enlace Diez</a>
+                <h3>Información</h3>
+                <a href="#!">Preguntas</a>
+                <a href="#!">Politica de Privacidad</a>
+                <a href="#!">Términos de Servicio</a>
             </div>
             <div className="footer-column">
                 <h3>Síguenos</h3>

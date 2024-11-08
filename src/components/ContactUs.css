@@ -1,0 +1,200 @@
+/* src/components/ContactUs.css */
+.contact-us {
+    padding: 40px;
+    color: #333;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+.contact-header h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.contact-header p {
+    margin-bottom: 40px;
+    font-size: 18px;
+}
+
+.contact-info-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.contact-info {
+    flex: 1;
+    min-width: 300px;
+}
+
+.contact-info h3 {
+    font-size: 20px;
+    color: #777;
+    margin-bottom: 5px;
+}
+
+.contact-info h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.contact-details p {
+    margin: 5px 0;
+}
+
+.contact-form-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.contact-form {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+}
+
+.contact-form h3, .contact-form h2, .contact-form p {
+    text-align: left;
+}
+
+.contact-form h3 {
+    font-size: 20px;
+    color: #777;
+    margin-bottom: 5px;
+}
+
+.contact-form h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.contact-form label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+
+.contact-form input, .contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+}
+
+.contact-form .terms {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.contact-form button {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.contact-form button:hover {
+    background-color: #555;
+}
+
+.contact-image {
+    flex: 1;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.contact-image img {
+    width: 100%; /* Ajusta el ancho al contenedor */
+    max-width: 250px; /* Tamaño máximo para la imagen */
+    border-radius: 5px;
+}
+
+/* Asegura que los elementos abarcan el ancho completo */
+.experience-share {
+    text-align: center;
+    background-color: #e0e0e0;
+    padding: 20px;
+    margin-top: 40px;
+    border-radius: 0; /* Elimina los bordes redondeados */
+    width: 100vw; /* Asegura que el ancho sea completo */
+    box-sizing: border-box;
+}
+
+.experience-share h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.experience-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.experience-buttons button {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.experience-buttons button:hover {
+    background-color: #555;
+}
+
+/* Media query para pantallas pequeñas (dispositivos móviles) */
+@media (max-width: 768px) {
+    .contact-info-section {
+        flex-direction: column;
+    }
+
+    .contact-form, .contact-info {
+        max-width: 100%;
+    }
+
+    .contact-form-container {
+        flex-direction: column; /* La imagen y el formulario se alinearán en columna */
+    }
+
+    .contact-header h1 {
+        font-size: 28px;
+    }
+
+    .contact-header p {
+        font-size: 16px;
+    }
+
+    .experience-share {
+        padding: 20px 10px;
+    }
+
+    .contact-image img {
+        width: 100%; /* Ajusta al ancho completo en dispositivos móviles */
+    }
+
+    .experience-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .experience-buttons button {
+        width: 100%;
+    }
+}
