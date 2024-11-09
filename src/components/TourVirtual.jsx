@@ -78,15 +78,14 @@ const TourVirtual = () => {
     const { destinationId } = location.state;
     const scenes = dataScene[destinationId] || dataScene['defaultScene'];
 
-    // Crear una referencia directa a los datos de escenas específicos para el destino actual
-    const destinationScenes = dataScene[destinationId] || {};
-
     useEffect(() => {
         const fetchTourData = async () => {
             try {
                 const sites = await getTouristSites();
                 const site = sites.find((s) => s.id === destinationId);
                 if (site) {
+                    // Imprime el valor completo del sitio turístico para verificar las coordenadas
+                    console.log("Datos del sitio:", site);
                     const imagesData = {
                         entrada: site.img360_Entrada,
                         intermedio1: site.img360_PuntoIntermedio1 ?? site.img360_VistaFinal,
@@ -99,34 +98,34 @@ const TourVirtual = () => {
                     };
                     setImages(imagesData);
 
-                    // Restaura la propiedad image en cada escena `inside`
                     const dynamicScenes = {
                         insideMain: {
                             image: site.img360_Entrada,
-                            hotSpots: destinationScenes.insideMain.hotSpots,
+                            hotSpots: dataScene[destinationId].insideMain.hotSpots,
                         },
                         insideOne: {
                             image: site.img360_PuntoIntermedio1 ?? site.img360_VistaFinal,
-                            hotSpots: destinationScenes.insideOne.hotSpots,
+                            hotSpots: dataScene[destinationId].insideOne.hotSpots,
                         },
                         insideTwo: {
                             image: site.img360_PuntoIntermedio2 ?? site.img360_VistaFinal,
-                            hotSpots: destinationScenes.insideTwo.hotSpots,
+                            hotSpots: dataScene[destinationId].insideTwo.hotSpots,
                         },
                         insideThree: {
                             image: site.img360_PuntoIntermedio3 ?? site.img360_VistaFinal,
-                            hotSpots: destinationScenes.insideThree.hotSpots,
+                            hotSpots: dataScene[destinationId].insideThree.hotSpots,
                         },
                         insideFour: {
                             image: site.img360_PuntoIntermedio4 ?? site.img360_VistaFinal,
-                            hotSpots: destinationScenes.insideFour.hotSpots,
+                            hotSpots: dataScene[destinationId].insideFour.hotSpots,
                         },
                         insideFinal: {
                             image: site.img360_VistaFinal,
-                            hotSpots: destinationScenes.insideFinal.hotSpots,
+                            hotSpots: dataScene[destinationId].insideFinal.hotSpots,
                         },
                         mapView: {
-                            hotSpots: destinationScenes.mapView.hotSpots,
+                            image: site.mapa, // La imagen del mapa
+                            hotSpots: dataScene[destinationId].mapView.hotSpots, // Hotspots del mapa
                         },
                     };
 
@@ -138,12 +137,8 @@ const TourVirtual = () => {
                         ubicacion: site.ubicacion,
                         nombre: site.nombre,
                         iframe: site.iframe,
-                        coordenadas: site.coordenadas,
+                        coordenadas: site.coordenadas, // Coordenadas predeterminadas
                     });
-
-                    // Llama a la narración de la escena inicial
-                    const initialNarration = destinationScenes.insideMain?.narration;
-                    if (initialNarration) speakText(initialNarration);
                 }
             } catch (error) {
                 console.error('Error al cargar los datos del sitio:', error);
@@ -153,36 +148,53 @@ const TourVirtual = () => {
         fetchTourData();
     }, [destinationId]);
 
-// Función de narración
-const speakText = (text) => {
+// Función para obtener y listar todas las voces
+const getVoices = () => {
+    return new Promise((resolve) => {
+        let voices = window.speechSynthesis.getVoices();
+        if (voices.length) {
+            resolve(voices);
+        } else {
+            window.speechSynthesis.onvoiceschanged = () => {
+                voices = window.speechSynthesis.getVoices();
+                resolve(voices);
+            };
+        }
+    });
+};
+
+// Función de narración con selección de voz
+const speakText = async (text) => {
     if (text) {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.rate = 1;
         utterance.pitch = 1;
 
-        // Obtén las voces disponibles
-        const voices = window.speechSynthesis.getVoices();
-        // Selecciona una voz en español de México, si está disponible
-        utterance.voice = voices.find(voice => voice.lang === 'es-MX') || voices[0]; // Usa `es-MX` o la primera voz disponible
+        // Obtiene las voces y selecciona una en específico (ajusta el idioma o nombre según lo necesites)
+        const voices = await getVoices();
+        utterance.voice = voices.find(voice => voice.lang === 'es-MX') || voices[0];
 
-        // Inicia la narración
         window.speechSynthesis.speak(utterance);
     }
 };
 
-    // Cambia de escena y ejecuta la narración correspondiente
-    const handleSceneChange = (newScene) => {
-        if (sceneData && sceneData[newScene]) {
-            // Cambia la escena y actualiza la imagen
-            setScene(sceneData[newScene]);
-            setCurrentImage(sceneData[newScene].image); // Usa directamente la imagen asociada a la escena
 
-            // Obtiene el texto de narración y llama a speakText
-            const narrationText = destinationScenes[newScene]?.narration;
-            if (narrationText) speakText(narrationText);
+// Modifica `handleSceneChange` para que use el texto de `narration`
+const handleSceneChange = (newScene) => {
+    if (sceneData && sceneData[newScene]) {
+        setScene(sceneData[newScene]);
+        setCurrentImage(sceneData[newScene].image);
+
+        // Obtén el texto de narración desde `dataScene`
+        const narrationText = dataScene[destinationId][newScene]?.narration;
+        
+        // Inicia la narración si hay texto disponible
+        if (narrationText) {
+            speakText(narrationText);
         }
-    };
+    }
+};
 
     const handleNextImage = () => {
         if (currentImage === images.entrada) {
@@ -236,7 +248,6 @@ const speakText = (text) => {
             );
         }
     };
-
     
 
     const renderMapHotspots = (hotSpots) => {

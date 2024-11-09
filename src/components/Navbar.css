@@ -1,11 +1,11 @@
-/* src/components/Navbar.css */
+/* Estilos básicos del navbar */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 30px;
-    background-color: #f2c23e;  /* Fondo oscuro profesional */
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
+    background-color: #f2c23e;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 100vw;
     box-sizing: border-box;
@@ -14,7 +14,7 @@
 
 .navbar-logo h1 {
     font-size: 28px;
-    color: #333;/* Color claro en el logo */
+    color: #333;
     margin: 0;
     font-weight: 600;
 }
@@ -50,7 +50,7 @@
 
 .navbar-menu li a:hover {
     color: #ffffff;
-    border-bottom: 2px solid #ffffff; /* Subrayado de color en hover */
+    border-bottom: 2px solid #ffffff;
 }
 
 .navbar-search {
@@ -84,4 +84,43 @@
 
 .navbar-search button:hover {
     background-color: #e2b53a;
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+    }
+
+    .navbar-menu {
+        display: none; /* Oculta el menú en pantallas pequeñas */
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+        margin-top: 10px;
+    }
+
+    .navbar-menu.open {
+        display: flex; /* Muestra el menú cuando está abierto */
+    }
+
+    .navbar-search {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    /* Estilo del botón "hamburguesa" para el menú */
+    .navbar-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f2c23e;
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        cursor: pointer;
+        font-size: 24px;
+    }
 }

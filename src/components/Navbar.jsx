@@ -6,6 +6,7 @@ import logo from '../assets/logo.png';
 
 function Navbar({ onSearch }) {
     const [searchTerm, setSearchTerm] = useState('');
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate();
 
     // Función para normalizar el término de búsqueda eliminando tildes
@@ -34,6 +35,11 @@ function Navbar({ onSearch }) {
         }
     };
 
+    // Función para alternar el menú en dispositivos móviles
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
+
     return (
         <nav className="navbar">
             <div className="navbar-logo">
@@ -41,12 +47,21 @@ function Navbar({ onSearch }) {
                     <img src={logo} alt="Virtual Ancón" className="logo-image" />
                 </a>
             </div>
-            <ul className="navbar-menu">
+
+            {/* Botón de menú "hamburguesa" para dispositivos móviles */}
+            <button className="navbar-toggle" onClick={toggleMenu}>
+                ☰
+            </button>
+
+            {/* Menú de navegación, se oculta en móviles si el menú no está abierto */}
+            <ul className={`navbar-menu ${isMenuOpen ? 'open' : ''}`}>
                 <li><a href="/visitas">Visitas</a></li>
                 <li><a href="/galeria">Galería</a></li>
                 <li><a href="/sobre-nosotros">Sobre Nosotros</a></li>
                 <li><a href="/contactanos">Contáctanos</a></li>
             </ul>
+
+            {/* Barra de búsqueda */}
             <div className="navbar-search">
                 <input
                     type="text"
@@ -62,6 +77,7 @@ function Navbar({ onSearch }) {
 }
 
 export default Navbar;
+
 
 
 
