@@ -12,6 +12,7 @@
     const Scene = {
         'YFdnQDhJ3kGyyDXx5Ray':{
             insideMain: {
+                narration: 'Estás en la entrada principal.',
                 hotSpots: {
                     Cuadro: {
                         type: 'custom',
@@ -43,6 +44,7 @@
                 }
             },
             insideOne: {
+                narration: 'Estás en el puesto de venta de los productos marinos que pescan.',
                 hotSpots: {
                     Confesionario: {
                         type: 'custom',
@@ -68,6 +70,7 @@
                 }
             },
             insideTwo: {
+                narration: 'Estás en la plaza del muelle.',
                 hotSpots: {
                     Campanario: {
                         type: 'custom',
@@ -93,6 +96,7 @@
                 }
             },
             insideThree: {
+                narration: 'Este es el puesto de venta de comidas marinas, ganadores de premios.',
                 hotSpots: {
                     Campanario: {
                         type: 'custom',
@@ -118,6 +122,7 @@
                 }
             },
             insideFour: {
+                narration: 'Estás en la Bahia donde se realizan paseos.',
                 hotSpots: {
                     Campanario: {
                         type: 'custom',
@@ -144,6 +149,7 @@
             },
         
             insideFinal: {
+                narration: 'Estás en el morro donde se pueden tener lindas vistas y donde se ven a los pescadores llegar.',
                 hotSpots: {
                     Campanario: {
                         type: 'custom',
@@ -175,6 +181,7 @@
 
         'QR1RIyn1bLmNerdxoMLT':{
             insideMain: {
+                narration: 'Estás en la entrada principal.',
                 hotSpots: {
                     PuestoVentas: {
                         type: 'custom',
@@ -186,6 +193,7 @@
                 }
             },
             insideOne: {
+                narration: 'Estás en el puesto de venta de los productos marinos que pescan.',
                 hotSpots: {
                     entrada: {
                         type: 'custom',
@@ -211,6 +219,7 @@
                 }
             },
             insideTwo: {
+                narration: 'Estás en la plaza del muelle.',
                 hotSpots: {
                     PuntoVenta: {
                         type: 'custom',
@@ -236,6 +245,7 @@
                 }
             },
             insideThree: {
+                narration: 'Este es el puesto de venta de comidas marinas, ganadores de premios.',
                 hotSpots: {
                     PuntoVenta: {
                         type: 'custom',
@@ -268,6 +278,7 @@
                 }
             },
             insideFour: {
+                narration: 'Estás en la Bahia donde se realizan paseos.',
                 hotSpots: {
                     Plaza: {
                         type: 'custom',
@@ -287,6 +298,7 @@
             },
         
             insideFinal: {
+                narration: 'Estás en el morro donde se pueden tener lindas vistas y donde se ven a los pescadores llegar.',
                 hotSpots: {
                     Campanario: {
                         type: 'custom',

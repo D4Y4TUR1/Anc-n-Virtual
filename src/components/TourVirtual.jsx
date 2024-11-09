@@ -78,14 +78,15 @@ const TourVirtual = () => {
     const { destinationId } = location.state;
     const scenes = dataScene[destinationId] || dataScene['defaultScene'];
 
+    // Crear una referencia directa a los datos de escenas específicos para el destino actual
+    const destinationScenes = dataScene[destinationId] || {};
+
     useEffect(() => {
         const fetchTourData = async () => {
             try {
                 const sites = await getTouristSites();
                 const site = sites.find((s) => s.id === destinationId);
                 if (site) {
-                    // Imprime el valor completo del sitio turístico para verificar las coordenadas
-                    console.log("Datos del sitio:", site);
                     const imagesData = {
                         entrada: site.img360_Entrada,
                         intermedio1: site.img360_PuntoIntermedio1 ?? site.img360_VistaFinal,
@@ -98,34 +99,34 @@ const TourVirtual = () => {
                     };
                     setImages(imagesData);
 
+                    // Restaura la propiedad image en cada escena `inside`
                     const dynamicScenes = {
                         insideMain: {
                             image: site.img360_Entrada,
-                            hotSpots: dataScene[destinationId].insideMain.hotSpots,
+                            hotSpots: destinationScenes.insideMain.hotSpots,
                         },
                         insideOne: {
                             image: site.img360_PuntoIntermedio1 ?? site.img360_VistaFinal,
-                            hotSpots: dataScene[destinationId].insideOne.hotSpots,
+                            hotSpots: destinationScenes.insideOne.hotSpots,
                         },
                         insideTwo: {
                             image: site.img360_PuntoIntermedio2 ?? site.img360_VistaFinal,
-                            hotSpots: dataScene[destinationId].insideTwo.hotSpots,
+                            hotSpots: destinationScenes.insideTwo.hotSpots,
                         },
                         insideThree: {
                             image: site.img360_PuntoIntermedio3 ?? site.img360_VistaFinal,
-                            hotSpots: dataScene[destinationId].insideThree.hotSpots,
+                            hotSpots: destinationScenes.insideThree.hotSpots,
                         },
                         insideFour: {
                             image: site.img360_PuntoIntermedio4 ?? site.img360_VistaFinal,
-                            hotSpots: dataScene[destinationId].insideFour.hotSpots,
+                            hotSpots: destinationScenes.insideFour.hotSpots,
                         },
                         insideFinal: {
                             image: site.img360_VistaFinal,
-                            hotSpots: dataScene[destinationId].insideFinal.hotSpots,
+                            hotSpots: destinationScenes.insideFinal.hotSpots,
                         },
                         mapView: {
-                            image: site.mapa, // La imagen del mapa
-                            hotSpots: dataScene[destinationId].mapView.hotSpots, // Hotspots del mapa
+                            hotSpots: destinationScenes.mapView.hotSpots,
                         },
                     };
 
@@ -137,8 +138,12 @@ const TourVirtual = () => {
                         ubicacion: site.ubicacion,
                         nombre: site.nombre,
                         iframe: site.iframe,
-                        coordenadas: site.coordenadas, // Coordenadas predeterminadas
+                        coordenadas: site.coordenadas,
                     });
+
+                    // Llama a la narración de la escena inicial
+                    const initialNarration = destinationScenes.insideMain?.narration;
+                    if (initialNarration) speakText(initialNarration);
                 }
             } catch (error) {
                 console.error('Error al cargar los datos del sitio:', error);
@@ -148,10 +153,34 @@ const TourVirtual = () => {
         fetchTourData();
     }, [destinationId]);
 
+// Función de narración
+const speakText = (text) => {
+    if (text) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 1;
+        utterance.pitch = 1;
+
+        // Obtén las voces disponibles
+        const voices = window.speechSynthesis.getVoices();
+        // Selecciona una voz en español de México, si está disponible
+        utterance.voice = voices.find(voice => voice.lang === 'es-MX') || voices[0]; // Usa `es-MX` o la primera voz disponible
+
+        // Inicia la narración
+        window.speechSynthesis.speak(utterance);
+    }
+};
+
+    // Cambia de escena y ejecuta la narración correspondiente
     const handleSceneChange = (newScene) => {
         if (sceneData && sceneData[newScene]) {
+            // Cambia la escena y actualiza la imagen
             setScene(sceneData[newScene]);
-            setCurrentImage(sceneData[newScene].image);
+            setCurrentImage(sceneData[newScene].image); // Usa directamente la imagen asociada a la escena
+
+            // Obtiene el texto de narración y llama a speakText
+            const narrationText = destinationScenes[newScene]?.narration;
+            if (narrationText) speakText(narrationText);
         }
     };
 
@@ -207,6 +236,8 @@ const TourVirtual = () => {
             );
         }
     };
+
+    
 
     const renderMapHotspots = (hotSpots) => {
         return Object.values(hotSpots).map((Element, i) => (
