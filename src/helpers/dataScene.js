@@ -176,80 +176,60 @@
         'QR1RIyn1bLmNerdxoMLT':{
             insideMain: {
                 hotSpots: {
-                    Cuadro: {
+                    PuestoVentas: {
                         type: 'custom',
-                        pitch: 38.11,
-                        yaw: 82.11,
-                        cssClass: 'hotspotElement',
-                    },
-                    Campanario: {
-                        type: 'custom',
-                        pitch: 10.46,
-                        yaw: 45.18,
-                        cssClass: 'moveScene',
-                        scene: 'insideOne',
-                    },
-                    Confesionario: {
-                        type: 'custom',
-                        pitch: 9.08,
-                        yaw: 135.77,
-                        cssClass: 'moveScene',
-                        scene: 'insideTwo',
-                    },
-                    Presbiterio: {
-                        type: 'custom',
-                        pitch: 11.89,
+                        pitch: 1.58,
                         yaw: 84.89,
                         cssClass: 'moveScene',
-                        scene: 'insideFinal',
+                        scene: 'insideOne',
                     },
                 }
             },
             insideOne: {
                 hotSpots: {
-                    Confesionario: {
-                        type: 'custom',
-                        pitch: 2.18,
-                        yaw: -95.77,
-                        cssClass: 'moveScene',
-                        scene: 'insideTwo',
-                    },
                     entrada: {
                         type: 'custom',
-                        pitch: -10.47,
-                        yaw: -73.89,
+                        pitch: 2.49,
+                        yaw: 70.47,
                         cssClass: 'moveScene',
                         scene: 'insideMain',
                     },
-                    Presbiterio: {
+                    Plaza: {
                         type: 'custom',
-                        pitch: 3.65,
-                        yaw: -163.27,
+                        pitch: -0.94,
+                        yaw: 166.27,
                         cssClass: 'moveScene',
-                        scene: 'insideFinal',
+                        scene: 'insideTwo',
+                    },
+                    Cevicheras: {
+                        type: 'custom',
+                        pitch: 1.17,
+                        yaw: -168.27,
+                        cssClass: 'moveScene',
+                        scene: 'insideThree',
                     }
                 }
             },
             insideTwo: {
                 hotSpots: {
-                    Campanario: {
+                    PuntoVenta: {
                         type: 'custom',
-                        pitch: 2-4.44,
-                        yaw: 90.77,
+                        pitch: -0.36,
+                        yaw: 28.77,
                         cssClass: 'moveScene',
                         scene: 'insideOne',
                     },
-                    entrada: {
+                    Cevicheras: {
                         type: 'custom',
-                        pitch: -5.87,
-                        yaw: 48.56,
+                        pitch: 1.23,
+                        yaw: -80.27,
                         cssClass: 'moveScene',
-                        scene: 'insideMain',
+                        scene: 'insideThree',
                     },
-                    Presbiterio: {
+                    Morro: {
                         type: 'custom',
-                        pitch: 1.39,
-                        yaw: 179.27,
+                        pitch: 1.394,
+                        yaw: -35.27,
                         cssClass: 'moveScene',
                         scene: 'insideFinal',
                     }
@@ -257,24 +237,31 @@
             },
             insideThree: {
                 hotSpots: {
-                    Campanario: {
+                    PuntoVenta: {
                         type: 'custom',
-                        pitch: 2-4.44,
-                        yaw: 90.77,
-                        cssClass: 'moveScene',
-                        scene: 'insideTwo',
-                    },
-                    entrada: {
-                        type: 'custom',
-                        pitch: -5.87,
-                        yaw: 48.56,
+                        pitch: 3.18,
+                        yaw: -145.77,
                         cssClass: 'moveScene',
                         scene: 'insideOne',
                     },
-                    Presbiterio: {
+                    Plaza: {
                         type: 'custom',
-                        pitch: 1.39,
-                        yaw: 179.27,
+                        pitch: 1.16,
+                        yaw: -92.55,
+                        cssClass: 'moveScene',
+                        scene: 'insideTwo',
+                    },
+                    Bahia: {
+                        type: 'custom',
+                        pitch: 3.04,
+                        yaw: 106.55,
+                        cssClass: 'moveScene',
+                        scene: 'insideFour',
+                    },
+                    Morro: {
+                        type: 'custom',
+                        pitch: 3.11,
+                        yaw: 144.27,
                         cssClass: 'moveScene',
                         scene: 'insideFinal',
                     }
@@ -282,24 +269,17 @@
             },
             insideFour: {
                 hotSpots: {
-                    Campanario: {
+                    Plaza: {
                         type: 'custom',
-                        pitch: 2-4.44,
-                        yaw: 90.77,
+                        pitch: -0.94,
+                        yaw: 166.27,
                         cssClass: 'moveScene',
                         scene: 'insideTwo',
                     },
-                    entrada: {
+                    Morro: {
                         type: 'custom',
-                        pitch: -5.87,
-                        yaw: 48.56,
-                        cssClass: 'moveScene',
-                        scene: 'insideOne',
-                    },
-                    Presbiterio: {
-                        type: 'custom',
-                        pitch: 1.39,
-                        yaw: 179.27,
+                        pitch: 4.173,
+                        yaw: 109.27,
                         cssClass: 'moveScene',
                         scene: 'insideFinal',
                     }
@@ -310,17 +290,17 @@
                 hotSpots: {
                     Campanario: {
                         type: 'custom',
-                        pitch: 2.13,
-                        yaw: -165.78,
+                        pitch: 2.43,
+                        yaw: 170.78,
                         cssClass: 'moveScene',
                         scene: 'insideOne',
                     },
-                    Confesionario: {
+                    Bahia: {
                         type: 'custom',
-                        pitch: 2.15,
-                        yaw: 175.47,
+                        pitch: 10.04,
+                        yaw: -131.55,
                         cssClass: 'moveScene',
-                        scene: 'insideTwo',
+                        scene: 'insideFour',
                     },
                 }
             },
