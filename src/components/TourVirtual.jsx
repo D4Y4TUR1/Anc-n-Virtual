@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Pannellum } from 'pannellum-react';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getTouristSites } from '../services/firestoreService';
 import dataScene from '../helpers/dataScene';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -67,16 +68,20 @@ const TourVirtual = () => {
     const [images, setImages] = useState({});
     const [currentImage, setCurrentImage] = useState('');
     const [showControls, setShowControls] = useState(true);
-    const [menuOpen, setMenuOpen] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(true);
     const [activeSection, setActiveSection] = useState(null);
-    const [siteInfo, setSiteInfo] = useState({ informacion: '', ubicacion: '', iframe: '', coordenadas: null });
+    const [siteInfo, setSiteInfo] = useState({ informacion: '', direccion: '', iframe: '', ubicacion: null });
     const [scene, setScene] = useState(null);
     const [sceneData, setSceneData] = useState(null);
+    const [voiceMuted, setVoiceMuted] = useState(false); // Estado para controlar la voz
+
 
     // Obtiene el ID del destino desde el estado de la navegación
     const location = useLocation();
     const { destinationId } = location.state;
     const scenes = dataScene[destinationId] || dataScene['defaultScene'];
+    const navigate = useNavigate(); // Instancia de useNavigate para redirección
+
 
     useEffect(() => {
         const fetchTourData = async () => {
@@ -134,10 +139,10 @@ const TourVirtual = () => {
                     setCurrentImage(site.img360_Entrada);
                     setSiteInfo({
                         informacion: site.informacion,
-                        ubicacion: site.ubicacion,
+                        direccion: site.direccion,
                         nombre: site.nombre,
                         iframe: site.iframe,
-                        coordenadas: site.coordenadas, // Coordenadas predeterminadas
+                        ubicacion: site.ubicacion, // Coordenadas predeterminadas
                     });
                 }
             } catch (error) {
@@ -148,37 +153,45 @@ const TourVirtual = () => {
         fetchTourData();
     }, [destinationId]);
 
-// Función para obtener y listar todas las voces
-const getVoices = () => {
-    return new Promise((resolve) => {
-        let voices = window.speechSynthesis.getVoices();
-        if (voices.length) {
-            resolve(voices);
+    // Función para alternar el estado de la voz (silenciar/activar)
+    const toggleVoice = () => {
+        if (voiceMuted) {
+            setVoiceMuted(false); // Activar voz
         } else {
-            window.speechSynthesis.onvoiceschanged = () => {
-                voices = window.speechSynthesis.getVoices();
-                resolve(voices);
-            };
+            window.speechSynthesis.cancel(); // Detener cualquier voz en progreso
+            setVoiceMuted(true); // Silenciar voz
         }
-    });
-};
+    };
 
-// Función de narración con selección de voz
-const speakText = async (text) => {
-    if (text) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 1;
-        utterance.pitch = 1;
+    // Función para obtener y listar todas las voces
+    const getVoices = () => {
+        return new Promise((resolve) => {
+            let voices = window.speechSynthesis.getVoices();
+            if (voices.length) {
+                resolve(voices);
+            } else {
+                window.speechSynthesis.onvoiceschanged = () => {
+                    voices = window.speechSynthesis.getVoices();
+                    resolve(voices);
+                };
+            }
+        });
+    };
 
-        // Obtiene las voces y selecciona una en específico (ajusta el idioma o nombre según lo necesites)
-        const voices = await getVoices();
-        utterance.voice = voices.find(voice => voice.lang === 'es-MX') || voices[0];
+    // Función de narración con selección de voz, ajustada para silenciar si `voiceMuted` está activado
+    const speakText = async (text) => {
+        if (text && !voiceMuted) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1;
+            utterance.pitch = 1;
 
-        window.speechSynthesis.speak(utterance);
-    }
-};
+            const voices = await getVoices();
+            utterance.voice = voices.find(voice => voice.lang === 'es-MX') || voices[0];
 
+            window.speechSynthesis.speak(utterance);
+        }
+    };
 
 // Modifica `handleSceneChange` para que use el texto de `narration`
 const handleSceneChange = (newScene) => {
@@ -328,6 +341,18 @@ const handleSceneChange = (newScene) => {
                     >
                         <img src={ImageIcon} alt="Mostrar Mapa" style={iconStyle} />
                     </button>
+                    {/* Botón para alternar la voz (silenciar/activar) */}
+                    <button onClick={toggleVoice} style={circularButtonStyle}>
+                        <img
+                            src={voiceMuted ? 'ruta-icono-activado' : 'ruta-icono-silenciado'}
+                            alt={voiceMuted ? 'Activar Voz' : 'Silenciar Voz'}
+                            style={iconStyle}
+                        />
+                    </button>
+                    {/* Botón para salir */}
+                    <button onClick={() => navigate('/')} style={circularButtonStyle}>
+                        🏠 {/* Puedes reemplazar con un icono de home si tienes uno */}
+                    </button>
                 </div>
             )}
 
@@ -342,16 +367,16 @@ const handleSceneChange = (newScene) => {
 
             {activeSection === 'location' && (
                 <div style={modalStyle}>
-                    <MapContainer center={{ lat: siteInfo.coordenadas._lat, lng: siteInfo.coordenadas._long }} zoom={100} style={{ width: '100%', height: '100%' }}>
+                    <MapContainer center={{ lat: siteInfo.ubicacion._lat, lng: siteInfo.ubicacion._long }} zoom={100} style={{ width: '100%', height: '100%' }}>
                         <TileLayer
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
-                        <Marker position={{ lat: siteInfo.coordenadas._lat, lng: siteInfo.coordenadas._long }}>
+                        <Marker position={{ lat: siteInfo.ubicacion._lat, lng: siteInfo.ubicacion._long }}>
                             <Popup>{siteInfo.nombre}</Popup>
                         </Marker>
                     </MapContainer>
                     <p>Ubicación del sitio: </p>
-                    <p>{siteInfo.ubicacion}</p>
+                    <p>{siteInfo.direccion}</p>
                     <button onClick={() => setActiveSection(null)}>Cerrar</button>
                 </div>
             )}

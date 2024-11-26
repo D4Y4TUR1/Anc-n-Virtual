@@ -1,0 +1,121 @@
+.itinerario-personalizado-container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.title {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.selection-container {
+    display: flex; /* Cambiamos de grid a flex para desplazar horizontalmente */
+    overflow-x: auto; /* Habilitamos el desplazamiento horizontal */
+    gap: 20px;
+    padding: 10px 0;
+    scroll-behavior: smooth; /* Agrega un desplazamiento suave */
+}
+
+.category {
+    min-width: 300px; /* Aseguramos que cada categoría tenga el mismo ancho */
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category h2 {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.category ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category ul li {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.category ul li:hover {
+    background-color: #f0f0f0;
+}
+
+.category ul li.selected {
+    background-color: #ffc107;
+    color: #fff;
+    font-weight: bold;
+}
+
+.generate-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #ffc107;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.generate-btn:hover {
+    background-color: #e0a800;
+}
+
+.itinerary-result {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.itinerary-result h2 {
+    text-align: center;
+    color: #333;
+    font-size: 1.5rem;
+}
+
+.itinerary-result ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.itinerary-result ul li {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+li{
+    color: #333;
+}
+
+.total-price {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+}

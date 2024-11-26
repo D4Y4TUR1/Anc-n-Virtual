@@ -18,11 +18,66 @@ const getSites = async () => {
 };
 export { getSites };
 
+// Función para obtener las actividades
+const getActivities = async () => {
+    const querySnapshot = await getDocs(collection(db, 'actividades'));
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+};
+
+const getGastronomicDestinations = async () => {
+    const destinations = [];
+    const snapshot = await getDocs(collection(db, "destinoGastronomico"));
+
+    for (const doc of snapshot.docs) {
+        const destinationData = { id: doc.id, ...doc.data(), items: [] };
+
+        // Cargar subcolecciones: comidas y bebidas
+        const comidasSnapshot = await getDocs(collection(doc.ref, "comidas"));
+        const bebidasSnapshot = await getDocs(collection(doc.ref, "bebidas"));
+
+        // Agregar comidas y bebidas al array de items
+        destinationData.items = [
+            ...comidasSnapshot.docs.map((itemDoc) => ({
+                id: itemDoc.id,
+                ...itemDoc.data(),
+                tipo: "Comida",
+            })),
+            ...bebidasSnapshot.docs.map((itemDoc) => ({
+                id: itemDoc.id,
+                ...itemDoc.data(),
+                tipo: "Bebida",
+            })),
+        ];
+
+        destinations.push(destinationData);
+    }
+
+    return destinations;
+};
+
+// Función para obtener los alojamientos
+const getAccommodations = async () => {
+    const querySnapshot = await getDocs(collection(db, 'alojamiento'));
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+};
+
+// Función para obtener destinos turísticos
 const getTouristSites = async () => {
     const querySnapshot = await getDocs(collection(db, 'destinoTuristico'));
-    const sites = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    console.log(sites); // Verificar los datos obtenidos
-    return sites;
-};  
-export { getTouristSites };
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+};
+
+// Función para obtener eventos
+const getEvents = async () => {
+    const querySnapshot = await getDocs(collection(db, 'eventos'));
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+};
+
+export {
+    getActivities,
+    getGastronomicDestinations,
+    getAccommodations,
+    getTouristSites,
+    getEvents
+};
 

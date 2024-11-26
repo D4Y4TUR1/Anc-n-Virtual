@@ -2,7 +2,7 @@
     const Scene = {
         'YFdnQDhJ3kGyyDXx5Ray':{
             insideMain: {
-                narration: 'Bienvenidos a la Iglesia de San Pedro de Ancón. La Iglesia de San Pedro de Ancón es uno de los principales símbolos religiosos e históricos del distrito. Construida en la segunda mitad del siglo XIX, esta iglesia ha sido testigo de varios eventos importantes en la historia de la localidad. La iglesia ha pasado por diversas etapas de renovación, particularmente después del terremoto de 1945, y sigue siendo un punto de encuentro espiritual y cultural para los habitantes de Ancón.',
+                narration: 'Bienvenidos a la Iglesia de San Pedro de Ancón. La Iglesia de San Pedro de Ancón es uno de los principales símbolos religiosos e históricos del distrito. ',
                 hotSpots: {
                     Cuadro: {
                         type: 'custom',

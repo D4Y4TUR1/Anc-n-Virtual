@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import ItinerarioPersonalizado from "./components/ItinerarioPersonalizado";
+import Itinerarios from './components/Itinerarios';
+import ClimaActividades from './components/ClimaActividades';
 import DestinationsSection from './components/DestinationsSection';
 import Footer from './components/Footer';
 import TourVirtual from './components/TourVirtual';
@@ -29,6 +32,9 @@ function App() {
             element={
               <>
                 <Hero />
+                <Itinerarios />
+                <ItinerarioPersonalizado />
+                <ClimaActividades/>
                 <DestinationsSection searchTerm={searchTerm} />
               </>
             } 
@@ -38,7 +44,10 @@ function App() {
             element={
               <>
                 {/* Muestra Hero solo si no hay término de búsqueda activo */}
-                {!searchTerm && <Hero />}
+                {!searchTerm && <Hero /> }
+                <Itinerarios />
+                <ItinerarioPersonalizado />
+                <ClimaActividades/>
                 <DestinationsSection searchTerm={searchTerm} />
               </>
             } 
