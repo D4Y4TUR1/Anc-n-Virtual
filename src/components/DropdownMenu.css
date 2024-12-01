@@ -1,0 +1,55 @@
+/* Fondo gris detrás del menú desplegable */
+.dropdown-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 900;
+}
+
+/* Menú desplegable */
+.dropdown-menu {
+    position: fixed;
+    top: 80px; /* Ajusta según la altura del navbar */
+    right: 20px; /* Ajusta según el diseño */
+    width: 250px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    z-index: 1000;
+}
+
+.dropdown-welcome{
+    color: #000000;
+
+}
+
+.dropdown-item {
+    margin: 10px 0;
+    font-size: 14px;
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.dropdown-item:hover {
+    text-decoration: underline;
+}
+
+.dropdown-logout {
+    padding: 10px;
+    border: none;
+    background-color: #ff4d4d;
+    color: white;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-logout:hover {
+    background-color: #e60000;
+}

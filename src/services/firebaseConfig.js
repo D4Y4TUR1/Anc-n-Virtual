@@ -2,6 +2,7 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
+import { getAuth } from 'firebase/auth'; // Importa el servicio de autenticación
 
 // Tu configuración de Firebase
 const firebaseConfig = {
@@ -17,5 +18,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
+const auth = getAuth(app); // Inicializa el servicio de autenticación
 
-export { db, storage };
+export { db, storage, auth }; // Exporta auth junto con los demás servicios
+
+

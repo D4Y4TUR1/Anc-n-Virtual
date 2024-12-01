@@ -73,11 +73,30 @@ const getEvents = async () => {
     return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 };
 
+// Función para agregar un nuevo usuario
+const addUser = async (uid, email) => {
+    try {
+        const userRef = doc(db, 'usuarios', uid); // Referencia al documento del usuario en la colección 'usuarios'
+        
+        // Guardar los datos del usuario en Firestore
+        await setDoc(userRef, {
+            email: email,
+            createdAt: new Date(), // Fecha de creación del usuario
+            // Puedes agregar más campos si lo deseas, como nombre, dirección, etc.
+        });
+
+        console.log(`Usuario ${uid} agregado a Firestore`);
+    } catch (e) {
+        console.error('Error al agregar usuario en Firestore: ', e);
+    }
+};
+
 export {
     getActivities,
     getGastronomicDestinations,
     getAccommodations,
     getTouristSites,
-    getEvents
+    getEvents,
+    addUser
 };
 

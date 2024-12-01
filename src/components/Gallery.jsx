@@ -1,67 +1,138 @@
-// src/components/Gallery.jsx
-import React, { useState, useEffect } from 'react';
-import './Gallery.css';
+import React, { useState, useEffect } from "react";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import Comments from "./Comments";
+import PhotoUploadAndRating from "./PhotoUploadAndRating";
+import "./Gallery.css";
 
-const Gallery = () => {
+const Gallery = ({ currentUser }) => {
+    const [destinations, setDestinations] = useState([]);
+    const [currentDestination, setCurrentDestination] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [selectedImage, setSelectedImage] = useState(null); // Agrega este estado para la imagen seleccionada
-
-    const images = [
-        { src: "Chosas.webp", alt: "Playa toma de sol" },
-        { src: "Portada Malecon Ferreyros.jpg", alt: "Portada Malecon" },
-        { src: "Vista.webp", alt: "Vista Playa" },
-        { src: "Sirena Muelle.jpg", alt: "Estatua en Ancón" }
-    ];
+    const [selectedImage, setSelectedImage] = useState(null);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % (images.length + 1));
-        }, 3000); // Cambia cada 3 segundos
-        return () => clearInterval(interval);
-    }, [images.length]);
+        const fetchDestinations = async () => {
+            const db = getFirestore();
+            const destRef = collection(db, "destinoTuristico");
+            const snapshot = await getDocs(destRef);
+            const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+            setDestinations(data);
+            setCurrentDestination(data[0]);
+        };
 
-    const openModal = (imageSrc) => {
-        setSelectedImage(imageSrc);
+        fetchDestinations();
+    }, []);
+
+    const handleNext = () => {
+        if (currentDestination) {
+            setCurrentIndex((prevIndex) =>
+                (prevIndex + 1) % Object.keys(currentDestination).filter((key) => key.startsWith("img360_")).length
+            );
+        }
     };
 
-    const closeModal = () => {
-        setSelectedImage(null);
+    const handlePrev = () => {
+        if (currentDestination) {
+            setCurrentIndex((prevIndex) =>
+                (prevIndex - 1 + Object.keys(currentDestination).filter((key) => key.startsWith("img360_")).length) %
+                Object.keys(currentDestination).filter((key) => key.startsWith("img360_")).length
+            );
+        }
+    };
+
+    const handleTabChange = (destinationId) => {
+        const selectedDest = destinations.find((dest) => dest.id === destinationId);
+        setCurrentDestination(selectedDest);
+        setCurrentIndex(0);
     };
 
     return (
-        <div className="gallery">
-            <section className="gallery-header">
-                <h1>Galería de Imágenes</h1>
-                <p>Descubre los destinos turísticos de Ancón.</p>
-            </section>
+        <div className="gallery-container">
+            <div className="gallery-left">
+                <section className="gallery-header">
+                    <h1>Galería de Imágenes</h1>
+                    <p>Descubre los destinos turísticos de Ancón.</p>
+                </section>
 
-            <section className="gallery-carousel">
-                <div
-                    className="carousel-track"
-                    style={{ transform: `translateX(-${currentIndex * 50}%)` }}
-                >
-                    {images.concat(images[0]).map((image, index) => (
-                        <div className="carousel-image" key={index} onClick={() => openModal(image.src)}>
-                            <img src={image.src} alt={image.alt} />
-                        </div>
+                <section className="tabs">
+                    {destinations.map((dest) => (
+                        <button
+                            key={dest.id}
+                            onClick={() => handleTabChange(dest.id)}
+                            className={currentDestination?.id === dest.id ? "active" : ""}
+                        >
+                            {dest.nombre}
+                        </button>
                     ))}
-                </div>
-            </section>
+                </section>
 
-            <section className="gallery-description">
-                <h2>Descripción del lugar</h2>
-                <p>
-                    Visitar Ancón te ofrece una experiencia única llena de historia, cultura y belleza natural.
-                    Cada sitio turístico revela un aspecto fascinante de esta joya costera.
-                </p>
-                <button>Explorar</button>
-                <button>Más</button>
-            </section>
+                {currentDestination && (
+                    <>
+                        <section className="gallery-carousel">
+                            <button className="carousel-btn prev" onClick={handlePrev}>
+                                &lt;
+                            </button>
+                            <div className="carousel-track-container">
+                                <div
+                                    className="carousel-track"
+                                    style={{
+                                        transform: `translateX(-${currentIndex * 100}%)`,
+                                    }}
+                                >
+                                    {Object.entries(currentDestination)
+                                        .filter(([key]) => key.startsWith("img360_"))
+                                        .map(([key, imgUrl], index) => (
+                                            <div
+                                                className={`carousel-image ${index === currentIndex ? "active" : ""}`}
+                                                key={index}
+                                                onClick={() => setSelectedImage(imgUrl)}
+                                            >
+                                                <img src={imgUrl} alt={`Imagen ${index + 1}`} />
+                                            </div>
+                                        ))}
+                                </div>
+                            </div>
+                            <button className="carousel-btn next" onClick={handleNext}>
+                                &gt;
+                            </button>
+                        </section>
+
+                        <section>
+                        <PhotoUploadAndRating
+                            destinationId={currentDestination.id}
+                            currentUser={currentUser}
+                        />
+                        </section>
+
+                        <section className="gallery-description">
+                            <h2>{currentDestination.nombre}</h2>
+                            <p>{currentDestination.descripcion}</p>
+                            <button>Explorar</button>
+                            <button>Más</button>
+                        </section>
+                    </>
+                )}
+
+            </div>
+
+            <div className="gallery-right">
+                {currentDestination && (
+                    <>
+                        <Comments
+                            destinationId={currentDestination.id}
+                            destinationName={currentDestination.nombre}
+                            currentUser={currentUser}
+                        />
+                    </>
+                )}
+            </div>
 
             {selectedImage && (
-                <div className="modal" onClick={closeModal}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <span className="close-button" onClick={closeModal}>&times;</span>
+                <div className="modal" onClick={() => setSelectedImage(null)}>
+                    <div className="modal-content">
+                        <span className="close-button" onClick={() => setSelectedImage(null)}>
+                            &times;
+                        </span>
                         <img src={selectedImage} alt="Imagen ampliada" />
                     </div>
                 </div>
@@ -71,5 +142,3 @@ const Gallery = () => {
 };
 
 export default Gallery;
-    
-

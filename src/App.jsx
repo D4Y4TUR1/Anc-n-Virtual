@@ -1,6 +1,6 @@
-// src/App.jsx
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { getAuth, onAuthStateChanged } from "firebase/auth"; // Importación para autenticación
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ItinerarioPersonalizado from "./components/ItinerarioPersonalizado";
@@ -12,10 +12,26 @@ import TourVirtual from './components/TourVirtual';
 import AboutUs from './components/AboutUs';
 import ContactUs from './components/ContactUs';
 import Gallery from './components/Gallery';
+import Login from './components/Login';
+import Register from './components/Register';
 import './App.css';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState(''); // Estado para almacenar el término de búsqueda
+  const [currentUser, setCurrentUser] = useState(null); // Estado para almacenar el usuario logeado
+
+  // Manejar autenticación
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(user);
+      } else {
+        setCurrentUser(null);
+      }
+    });
+    return () => unsubscribe(); // Limpiar el listener al desmontar
+  }, []);
 
   // Función para actualizar el término de búsqueda
   const handleSearch = (term) => {
@@ -24,38 +40,44 @@ function App() {
 
   return (
     <Router>
-      <div className="app-container"> {/* Contenedor principal */}
+      <div className="app-container">
         <Navbar onSearch={handleSearch} />
         <Routes>
-          <Route 
-            path="/" 
+          <Route
+            path="/"
             element={
               <>
                 <Hero />
-                <Itinerarios />
-                <ItinerarioPersonalizado />
-                <ClimaActividades/>
                 <DestinationsSection searchTerm={searchTerm} />
               </>
-            } 
+            }
           />
-          <Route 
-            path="/visitas" 
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/visitas"
             element={
               <>
-                {/* Muestra Hero solo si no hay término de búsqueda activo */}
-                {!searchTerm && <Hero /> }
-                <Itinerarios />
-                <ItinerarioPersonalizado />
-                <ClimaActividades/>
+                {!searchTerm && <Hero />}
                 <DestinationsSection searchTerm={searchTerm} />
               </>
-            } 
+            }
           />
           <Route path="/tour-virtual/:id" element={<TourVirtual />} />
+          <Route
+            path="/itinerario"
+            element={
+              <>
+                <ClimaActividades />
+                <Itinerarios />
+                <ItinerarioPersonalizado />
+              </>
+            }
+          />
           <Route path="/sobre-nosotros" element={<AboutUs />} />
           <Route path="/contactanos" element={<ContactUs />} />
-          <Route path="/galeria" element={<Gallery />} />
+          <Route path="/galeria" element={<Gallery currentUser={currentUser} />} />
+          <Route path="*" element={<Hero />} />
         </Routes>
         <Footer />
       </div>
@@ -64,5 +86,3 @@ function App() {
 }
 
 export default App;
-
-
